@@ -1,6 +1,7 @@
 package com.codepath.apps.restclienttemplate.adapters;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +24,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder> {
 
     Context context;
     List<Tweet> tweets;
+    private static final String TAG = "TweetsAdapterTAG";
 
     public TweetsAdapter(Context context, List<Tweet> tweets) {
         this.context = context;
@@ -80,11 +83,11 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvBody.setText(tweet.body);
             tvScreenName.setText("@" + tweet.user.screenName);
             //tvCreatedAt.setText(tweet.createdAt);
-            Calendar calendar = Calendar.getInstance();
-            String today = new SimpleDateFormat("MM/dd/yy HH:mm aa").format(calendar.getTime());
-            Log.i("Date and Time:", today);
-            String tweetDate = (String) new SimpleDateFormat("MM/dd/yy HH:mm aa").format(new SimpleDateFormat("EEE MMM d HH:mm:ss Z yyyy").parse(tweet.createdAt));
-            tvCreatedAt.setText("· " + setDate(today, tweetDate));
+            //Calendar calendar = Calendar.getInstance();
+            //String today = new SimpleDateFormat("MM/dd/yy HH:mm aa").format(calendar.getTime());
+            //Log.i("Date and Time:", today);
+            //String tweetDate = (String) new SimpleDateFormat("MM/dd/yy HH:mm aa").format(new SimpleDateFormat("EEE MMM d HH:mm:ss Z yyyy").parse(tweet.createdAt));
+            tvCreatedAt.setText(getRelativeTimeAgo(tweet.createdAt));
             tvName.setText(tweet.user.name);
             Glide.with(context)
                     .load(tweet.user.profileImageUrl)
@@ -92,12 +95,44 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     .into(ivProfileImage);
         }
 
-        public String setDate(String today, String date) {
-            if (today.substring(0,8).equals(date.substring(0,8))){
-                return (String) date.substring(10);
-            } else {
-                return date.substring(0,8);
+        // Function found here: https://gist.github.com/nesquena/f786232f5ef72f6e10a7
+        public String getRelativeTimeAgo(String date) {
+
+            final int SECOND_MILLIS = 1000;
+            final int MINUTE_MILLIS = 60 * SECOND_MILLIS;
+            final int HOUR_MILLIS = 60 * MINUTE_MILLIS;
+            final int DAY_MILLIS = 24 * HOUR_MILLIS;
+
+            String twitterFormat = "EEE MMM dd HH:mm:ss ZZZZZ yyyy";
+            SimpleDateFormat sf = new SimpleDateFormat(twitterFormat, Locale.ENGLISH);
+            sf.setLenient(true);
+
+            try {
+                long time = sf.parse(date).getTime();
+                long now = System.currentTimeMillis();
+
+                final long diff = now - time;
+                if (diff < MINUTE_MILLIS) {
+                    return "just now";
+                } else if (diff < 2 * MINUTE_MILLIS) {
+                    return "a minute ago";
+                } else if (diff < 50 * MINUTE_MILLIS) {
+                    return diff / MINUTE_MILLIS + " m";
+                } else if (diff < 90 * MINUTE_MILLIS) {
+                    return "an hour ago";
+                } else if (diff < 24 * HOUR_MILLIS) {
+                    return diff / HOUR_MILLIS + " h";
+                } else if (diff < 48 * HOUR_MILLIS) {
+                    return "yesterday";
+                } else {
+                    return diff / DAY_MILLIS + " d";
+                }
+            } catch (ParseException e) {
+                Log.i(TAG, "getRelativeTimeAgo failed");
+                e.printStackTrace();
             }
+
+            return "";
         }
     }
 }
