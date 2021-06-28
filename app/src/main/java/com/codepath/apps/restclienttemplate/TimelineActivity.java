@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.codepath.apps.restclienttemplate.adapters.TweetsAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -66,5 +67,10 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.e(TAG, "Failure!" + response, throwable);
             }
         });
+    }
+
+    public void onLogoutButton(View view) {
+        client.clearAccessToken(); // forget who's logged in
+        finish(); // navigate backwards to Login screen
     }
 }
