@@ -65,3 +65,5 @@ build
 import-summary.txt
 
 apikey.properties
+
+.DS_Store
