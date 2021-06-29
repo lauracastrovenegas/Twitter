@@ -11,6 +11,14 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+
+    </style>
+
+    <style name="Overflow" parent="android:TextAppearance">
+        <item name="android:textColor">#ff0000</item>
+    </style>
+    <style name="Normal" parent="android:TextAppearance">
+        <item name="android:textColor">#808080</item>
     </style>
 
 </resources>
