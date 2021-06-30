@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.codepath.apps.restclienttemplate.R;
 import com.codepath.apps.restclienttemplate.models.Tweet;
 
@@ -76,6 +77,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         ImageView ivProfileImage;
+        ImageView ivMedia;
         TextView tvScreenName;
         TextView tvBody;
         TextView tvCreatedAt;
@@ -84,6 +86,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             ivProfileImage = itemView.findViewById(R.id.ivProfileImage);
+            ivMedia = itemView.findViewById(R.id.ivMedia);
             tvBody = itemView.findViewById(R.id.tvBody);
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
@@ -104,6 +107,15 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     .load(tweet.user.profileImageUrl)
                     .circleCrop()
                     .into(ivProfileImage);
+
+            Glide.with(context)
+                    .load(tweet.entities.media.get(0).getMediaUrl())
+                    .override(1000, 500)
+                    .centerCrop()
+                    .into(ivMedia);
+
+
+            Log.i("Media Url", "Here is the text:" + tweet.body);
         }
 
         // Function found here: https://gist.github.com/nesquena/f786232f5ef72f6e10a7
