@@ -6,13 +6,27 @@
     android:layout_height="match_parent"
     tools:context=".ComposeActivity">
 
+    <ImageButton
+        android:id="@+id/btnClose"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:background="#00FFFFFF"
+        android:foregroundGravity="center"
+        android:onClick="onClose"
+        app:srcCompat="@drawable/ic_vector_close" />
+
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/inputLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
+        android:layout_below="@+id/btnClose"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
         app:counterEnabled="true"
         app:counterMaxLength="280"
         app:counterOverflowTextAppearance="@style/Overflow"
@@ -31,7 +45,10 @@
             android:gravity="start|top"
             android:hint="@string/what_s_happening"
             android:inputType="textMultiLine"
-            android:minLines="5" />
+            android:minLines="5"
+            android:textColor="#000000"
+            android:textColorHighlight="@color/twitter_blue_30"
+            android:textColorLink="@color/twitter_blue" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
@@ -40,7 +57,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/inputLayout"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="20dp"
+        android:background="@color/twitter_blue"
+        android:fontFamily="@font/roboto_black"
         android:text="@string/tweet" />
+
 </RelativeLayout>
