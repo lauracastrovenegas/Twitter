@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="right"
             android:background="#001DA1F2"
+            android:fontFamily="@font/roboto_black"
             android:gravity="center_horizontal|center_vertical"
             android:onClick="onLogoutButton"
             android:text="SIGN OUT"

@@ -13,8 +13,8 @@
         android:id="@+id/rlTweet"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp">
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp">
 
         <ImageView
             android:id="@+id/ivProfileImage"
@@ -37,6 +37,7 @@
             android:layout_toStartOf="@+id/tvCreatedAt"
             android:layout_toEndOf="@+id/tvName"
             android:ellipsize="end"
+            android:fontFamily="@font/roboto"
             android:maxWidth="100dp"
             android:maxLines="1"
             tools:text="\@lauraacastro___" />
@@ -50,9 +51,10 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="20dp"
             android:layout_toEndOf="@+id/ivProfileImage"
-            android:textColor="#000000"
             android:autoLink="all"
+            android:fontFamily="@font/roboto"
             android:linksClickable="true"
+            android:textColor="#000000"
             tools:text="This is my tweet!!" />
 
         <TextView
@@ -63,6 +65,7 @@
             android:layout_marginStart="10dp"
             android:layout_toEndOf="@+id/ivProfileImage"
             android:ellipsize="end"
+            android:fontFamily="@font/roboto"
             android:maxWidth="150dp"
             android:maxLines="1"
             android:textColor="#000000"
@@ -76,6 +79,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
+            android:fontFamily="@font/roboto"
             tools:text="12h" />
 
         <ImageView
