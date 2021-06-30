@@ -1,7 +1,9 @@
 package com.codepath.apps.restclienttemplate;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -14,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
+import androidx.appcompat.widget.Toolbar;
 
 import com.codepath.apps.restclienttemplate.adapters.TweetsAdapter;
 import com.codepath.apps.restclienttemplate.models.Tweet;
@@ -31,11 +34,15 @@ public class TimelineActivity extends AppCompatActivity {
 
     public static final String TAG = "TimelineActivity";
     private final int REQUEST_CODE = 20;
+
     private SwipeRefreshLayout swipeContainer;
+    private EndlessRecyclerViewScrollListener scrollListener;
+
     TwitterClient client;
     RecyclerView rvTweets;
     TweetsAdapter adapter;
     List<Tweet> tweets;
+    long lowest_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,38 +73,48 @@ public class TimelineActivity extends AppCompatActivity {
         adapter = new TweetsAdapter(this, tweets);
 
         // Recycler view setup: layout manager and the adapter
-        rvTweets.setLayoutManager(new LinearLayoutManager(this));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        rvTweets.setLayoutManager(linearLayoutManager);
         rvTweets.setAdapter(adapter);
+
+        // set up listener for endless scroll
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                loadNextDataFromApi();
+            }
+        };
+
+        rvTweets.addOnScrollListener(scrollListener);
+
         populateHomeTimeline();
 
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setLogo(R.drawable.twitter_logo_white);
-        getSupportActionBar().setDisplayUseLogoEnabled(true);
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(myToolbar);
+
+
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
+    private void loadNextDataFromApi() {
+        Log.i(TAG, "+25");
+        client.getHomeTimeline2(lowest_id, new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Headers headers, JSON json) {
+                try {
+                    tweets.addAll(Tweet.fromJsonArray(json.jsonArray));
+                    adapter.notifyDataSetChanged();
+                    lowest_id = tweets.get(tweets.size() - 1).id;
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.compose) {
-            // Compose Icon has been selected
-            // Navigate to compose activity
-            Intent intent = new Intent(this, ComposeActivity.class);
-            startActivityForResult(intent, REQUEST_CODE);
-            return true;
-        }
+            @Override
+            public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
 
-        if (item.getItemId() == R.id.signout) {
-            onLogoutButton();
-            return true;
-        }
+            }
+        });
 
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -124,6 +141,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.i(TAG, "Success!" + json.toString());
                 try {
                     tweets.addAll(Tweet.fromJsonArray(json.jsonArray));
+                    lowest_id = tweets.get(tweets.size() - 1).id;
                     adapter.notifyDataSetChanged();
                     Log.i(TAG, "Tweets" + tweets.toString());
                 } catch (JSONException e) {
@@ -139,12 +157,17 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-    public void onLogoutButton() {
+    public void onLogoutButton(View view) {
         client.clearAccessToken(); // forget who's logged in
         
         startActivity(new Intent(TimelineActivity.this, LoginActivity.class));
 
         finish(); // navigate backwards to Login screen
+    }
+
+    public void onComposeButton(View view) {
+        Intent intent = new Intent(this, ComposeActivity.class);
+        startActivityForResult(intent, REQUEST_CODE);
     }
 
     public void fetchTimelineAsync(int page){
