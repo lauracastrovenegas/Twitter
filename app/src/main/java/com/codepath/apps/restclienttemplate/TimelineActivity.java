@@ -86,6 +86,12 @@ public class TimelineActivity extends AppCompatActivity {
             startActivityForResult(intent, REQUEST_CODE);
             return true;
         }
+
+        if (item.getItemId() == R.id.signout) {
+            onLogoutButton();
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -128,8 +134,11 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-    public void onLogoutButton(View view) {
+    public void onLogoutButton() {
         client.clearAccessToken(); // forget who's logged in
+        
+        startActivity(new Intent(TimelineActivity.this, LoginActivity.class));
+
         finish(); // navigate backwards to Login screen
     }
 
