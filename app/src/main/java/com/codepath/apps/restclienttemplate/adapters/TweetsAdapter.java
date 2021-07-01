@@ -82,6 +82,8 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
         TextView tvBody;
         TextView tvCreatedAt;
         TextView tvName;
+        TextView tvRetweet;
+        TextView tvLike;
 
         public ViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -91,18 +93,18 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
             tvScreenName = itemView.findViewById(R.id.tvScreenName);
             tvCreatedAt = itemView.findViewById(R.id.tvCreatedAt);
             tvName = itemView.findViewById(R.id.tvName);
+            tvLike = itemView.findViewById(R.id.tvLike);
+            tvRetweet = itemView.findViewById(R.id.tvRetweet);
         }
 
         public void bind(Tweet tweet) throws ParseException {
             tvBody.setText(tweet.body);
             tvScreenName.setText("@" + tweet.user.screenName);
-            //tvCreatedAt.setText(tweet.createdAt);
-            //Calendar calendar = Calendar.getInstance();
-            //String today = new SimpleDateFormat("MM/dd/yy HH:mm aa").format(calendar.getTime());
-            //Log.i("Date and Time:", today);
-            //String tweetDate = (String) new SimpleDateFormat("MM/dd/yy HH:mm aa").format(new SimpleDateFormat("EEE MMM d HH:mm:ss Z yyyy").parse(tweet.createdAt));
             tvCreatedAt.setText(getRelativeTimeAgo(tweet.createdAt));
             tvName.setText(tweet.user.name);
+            tvRetweet.setText(String.valueOf(tweet.retweet_count));
+            tvLike.setText(String.valueOf(tweet.favorite_count));
+
             Glide.with(context)
                     .load(tweet.user.profileImageUrl)
                     .circleCrop()
@@ -113,8 +115,6 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     .override(1000, 500)
                     .centerCrop()
                     .into(ivMedia);
-
-
 
         }
 

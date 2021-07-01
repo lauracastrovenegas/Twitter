@@ -16,6 +16,8 @@ public class Tweet {
     public User user;
     public Entities entities;
     public long id;
+    public int retweet_count;
+    public int favorite_count;
 
     // Empty constructor for Parcel Library
     public Tweet(){}
@@ -30,6 +32,8 @@ public class Tweet {
         tweet.createdAt = jsonObject.getString("created_at");
         tweet.user = User.fromJson(jsonObject.getJSONObject("user"));
         tweet.entities = Entities.fromJson(jsonObject.getJSONObject("entities"));
+        tweet.retweet_count = jsonObject.getInt("retweet_count");
+        tweet.favorite_count = jsonObject.getInt("favorite_count");
         tweet.id = jsonObject.getLong("id");
         return tweet;
     }

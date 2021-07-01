@@ -40,6 +40,7 @@
             android:fontFamily="@font/roboto"
             android:maxWidth="100dp"
             android:maxLines="1"
+            android:textColor="@color/light_gray"
             tools:text="\@lauraacastro___" />
 
         <TextView
@@ -80,6 +81,7 @@
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
             android:fontFamily="@font/roboto"
+            android:textColor="@color/light_gray"
             tools:text="12h" />
 
         <ImageView
@@ -130,6 +132,18 @@
                 android:layout_toEndOf="@+id/ivRetweet"
                 app:srcCompat="@drawable/ic_vector_heart_stroke" />
 
+            <TextView
+                android:id="@+id/tvLike"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/ivLike"
+                android:foregroundGravity="center"
+                android:gravity="center"
+                android:textColor="@color/light_gray"
+                android:textSize="10sp"
+                tools:text="345" />
+
             <ImageView
                 android:id="@+id/ivRetweet"
                 android:layout_width="21dp"
@@ -139,6 +153,16 @@
                 android:layout_marginTop="0dp"
                 android:layout_toEndOf="@+id/ivMessage"
                 app:srcCompat="@drawable/ic_vector_retweet_stroke" />
+
+            <TextView
+                android:id="@+id/tvRetweet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_toEndOf="@+id/ivRetweet"
+                android:textColor="@color/light_gray"
+                android:textSize="10sp"
+                tools:text="200" />
         </RelativeLayout>
 
     </RelativeLayout>
