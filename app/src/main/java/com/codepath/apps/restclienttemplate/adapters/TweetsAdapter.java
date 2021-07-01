@@ -115,7 +115,7 @@ public class TweetsAdapter extends RecyclerView.Adapter<TweetsAdapter.ViewHolder
                     .into(ivMedia);
 
 
-            Log.i("Media Url", "Here is the text:" + tweet.body);
+
         }
 
         // Function found here: https://gist.github.com/nesquena/f786232f5ef72f6e10a7

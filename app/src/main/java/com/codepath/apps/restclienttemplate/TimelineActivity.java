@@ -97,7 +97,7 @@ public class TimelineActivity extends AppCompatActivity {
 
     private void loadNextDataFromApi() {
         Log.i(TAG, "+25");
-        client.getHomeTimeline2(lowest_id, new JsonHttpResponseHandler() {
+        client.getHomeTimeline(lowest_id, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Headers headers, JSON json) {
                 try {
