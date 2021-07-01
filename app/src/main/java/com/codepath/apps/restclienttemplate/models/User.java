@@ -7,6 +7,10 @@ import org.parceler.Parcel;
 @Parcel
 public class User {
 
+    private static final String NAME = "name";
+    private static final String SCREEN_NAME = "screen_name";
+    private static final String PROFILE_IMAGE = "profile_image_url_https";
+
     public String name;
     public String screenName;
     public String profileImageUrl;
@@ -16,9 +20,9 @@ public class User {
 
     public static User fromJson(JSONObject jsonObject) throws JSONException {
         User user = new User();
-        user.name = jsonObject.getString("name");
-        user.screenName = jsonObject.getString("screen_name");
-        user.profileImageUrl = jsonObject.getString("profile_image_url_https");
+        user.name = jsonObject.getString(NAME);
+        user.screenName = jsonObject.getString(SCREEN_NAME);
+        user.profileImageUrl = jsonObject.getString(PROFILE_IMAGE);
 
         return user;
     }

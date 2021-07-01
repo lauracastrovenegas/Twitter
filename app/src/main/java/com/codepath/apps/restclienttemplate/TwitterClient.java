@@ -10,16 +10,11 @@ import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;
 
 /*
- * 
- * This is the object responsible for communicating with a REST API. 
- * Specify the constants below to change the API being communicated with.
+ * This is the object responsible for communicating with a REST API.
  * See a full list of supported API classes: 
  *   https://github.com/scribejava/scribejava/tree/master/scribejava-apis/src/main/java/com/github/scribejava/apis
  * Key and Secret are provided by the developer site for the given API i.e dev.twitter.com
  * Add methods for each relevant endpoint in the API.
- * 
- * NOTE: You may want to rename this object based on the service i.e TwitterClient or FlickrClient
- * 
  */
 public class TwitterClient extends OAuthBaseClient {
 	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance();
@@ -33,6 +28,21 @@ public class TwitterClient extends OAuthBaseClient {
 	// See https://developer.chrome.com/multidevice/android/intents
 	public static final String REST_CALLBACK_URL_TEMPLATE = "intent://%s#Intent;action=android.intent.action.VIEW;scheme=%s;package=%s;S.browser_fallback_url=%s;end";
 
+	// API URL fetch strings
+	public static final String GET_TIMELINE_URL = "statuses/home_timeline.json";
+	public static final String POST_TWEET_URL = "statuses/update.json";
+
+	// Parameters for fetch requests
+	public static final String COUNT = "count";
+	public static final String SINCE_ID = "since_id";
+	public static final String MAX_ID = "max_id";
+	public static final String STATUS = "status";
+	public static final String TWEET_MODE = "tweet_mode";
+
+	// current tweet mode
+	public static final String TWEET_MODE_STRING = "extended";
+	public static final int MAX_NUM_OF_TWEETS = 25;
+
 	public TwitterClient(Context context) {
 		super(context, REST_API_INSTANCE,
 				REST_URL,
@@ -43,34 +53,23 @@ public class TwitterClient extends OAuthBaseClient {
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
 
-	// DEFINE METHODS for different API endpoints here
-	// make string literals variables
-	// combine methods
-	public void getHomeTimeline(JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/home_timeline.json");
-		// Can specify query string params directly or through RequestParams.
-		RequestParams params = new RequestParams();
-		params.put("count", 25);
-		params.put("since_id", 1);
-		params.put("tweet_mode", "extended");
-		client.get(apiUrl, params, handler);
-	}
-
 	public void getHomeTimeline(long max_id, JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/home_timeline.json");
-		// Can specify query string params directly or through RequestParams.
+		String apiUrl = getApiUrl(GET_TIMELINE_URL);
 		RequestParams params = new RequestParams();
-		params.put("count", 25);
-		params.put("max_id", max_id);
-		params.put("tweet_mode", "extended");
+		if (max_id > -1){
+			params.put(MAX_ID, max_id);
+		} else {
+			params.put(SINCE_ID, 1);
+		}
+		params.put(COUNT, MAX_NUM_OF_TWEETS);
+		params.put(TWEET_MODE, TWEET_MODE_STRING);
 		client.get(apiUrl, params, handler);
 	}
 
 	public void publishTweet(String tweetContent, JsonHttpResponseHandler handler) {
-		String apiUrl = getApiUrl("statuses/update.json");
-		// Can specify query string params directly or through RequestParams.
+		String apiUrl = getApiUrl(POST_TWEET_URL);
 		RequestParams params = new RequestParams();
-		params.put("status", tweetContent);
+		params.put(STATUS, tweetContent);
 		client.post(apiUrl, params, "",handler);
 	}
 }

@@ -14,6 +14,7 @@ import java.util.List;
 @Parcel
 public class Media {
 
+    private static final String IMAGE_URL_REQUEST = "media_url_https";
     public String mediaUrl;
 
     public Media(){
@@ -22,7 +23,7 @@ public class Media {
 
     public static Media fromJson(JSONObject jsonObject) throws JSONException {
         Media media = new Media();
-        media.mediaUrl = jsonObject.getString("media_url_https");
+        media.mediaUrl = jsonObject.getString(IMAGE_URL_REQUEST);
 
         return media;
     }

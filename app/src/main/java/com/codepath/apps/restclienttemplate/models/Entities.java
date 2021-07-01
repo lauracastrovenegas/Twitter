@@ -13,6 +13,8 @@ import java.util.List;
 @Parcel
 public class Entities {
 
+    private static final String MEDIA_REQUEST = "media";
+
     public List<Media> media;
 
     // Empty constructor for Parcel Library
@@ -21,7 +23,7 @@ public class Entities {
     public static Entities fromJson(JSONObject jsonObject) throws JSONException {
         Entities entities = new Entities();
         try {
-            entities.media = Media.fromJsonArray(jsonObject.getJSONArray("media"));
+            entities.media = Media.fromJsonArray(jsonObject.getJSONArray(MEDIA_REQUEST));
         } catch (JSONException e){
             entities.media = new ArrayList<>();
             entities.media.add(new Media());
