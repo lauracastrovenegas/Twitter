@@ -14,7 +14,7 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/ic_launcher_twitter_round"
+        app:srcCompat="@drawable/twitter_logo_blue"
         tools:srcCompat="@drawable/twitter_logo_blue" />
 
     <TextView
@@ -40,7 +40,8 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="20dp"
         android:layout_marginBottom="20dp"
-        android:background="@color/twitter_blue"
+        android:background="@drawable/roundstyle"
+        android:backgroundTint="@color/twitter_blue"
         android:fontFamily="@font/roboto_black"
         android:onClick="loginToRest"
         android:text="@string/login_label" />
