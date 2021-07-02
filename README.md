@@ -41,8 +41,8 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-![App Portrait Walkthrough](./screenshots/Twitter_Walkthrough_Portrait.gif)
-![App Landscape Walkthrough](./screenshots/Twitter_Walkthrough_Portrait.gif)
+![App Portrait Walkthrough](Twitter/screenshots/Twitter_Walkthrough_Portrait.gif)
+![App Landscape Walkthrough](Twitter/screenshots/Twitter_Walkthrough_Landscape.gif)
 
 GIF created with [Kap](https://getkap.co/).
 
