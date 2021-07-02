@@ -21,8 +21,13 @@ import okhttp3.Headers;
 
 public class ComposeActivity extends AppCompatActivity {
 
-    public static  final int MAX_TWEET_LENGTH = 140;
-    public static  final String TAG = "Compose Activity";
+    public static final String FAILURE_MSG = "Failed!";
+
+    public static final int MAX_TWEET_LENGTH = 280;
+    public static final String TAG = "Compose Activity";
+    public static final String EMPTY_TWEET_MSG = "Sorry, your tweet cannot be empty";
+    public static final String LONG_TWEET_MSG = "Sorry, your tweet is too long";
+    public static final String KEY = "tweet";
 
     EditText etCompose;
     Button btnTweet;
@@ -48,11 +53,11 @@ public class ComposeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String tweetContent = etCompose.getText().toString();
                 if (tweetContent.isEmpty()) {
-                    Toast.makeText(ComposeActivity.this, "Sorry, your tweet cannot be empty", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ComposeActivity.this, EMPTY_TWEET_MSG, Toast.LENGTH_LONG).show();
                     return;
                 }
                 if (tweetContent.length() > MAX_TWEET_LENGTH){
-                    Toast.makeText(ComposeActivity.this, "Sorry, your tweet is too long", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ComposeActivity.this, LONG_TWEET_MSG, Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -60,12 +65,10 @@ public class ComposeActivity extends AppCompatActivity {
                 client.publishTweet(tweetContent, new JsonHttpResponseHandler() {
                     @Override
                     public void onSuccess(int statusCode, Headers headers, JSON json) {
-                        Log.i(TAG, "onSuccess on publish tweet");
                         try {
                             Tweet tweet = Tweet.fromJson(json.jsonObject);
-                            Log.i(TAG, "Published tweet says:" + tweet.body);
                             Intent intent = new Intent();
-                            intent.putExtra("tweet", Parcels.wrap(tweet));
+                            intent.putExtra(KEY, Parcels.wrap(tweet));
                             // set result code and bundle data for response
                             setResult(RESULT_OK, intent);
                             // close the activity, pass data to the parent
@@ -77,7 +80,7 @@ public class ComposeActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(int statusCode, Headers headers, String response, Throwable throwable) {
-                        Log.e(TAG, "onFailure on publish tweet", throwable);
+                        Log.e(TAG, FAILURE_MSG, throwable);
                     }
                 });
             }
@@ -85,6 +88,7 @@ public class ComposeActivity extends AppCompatActivity {
 
     }
 
+    // Method used by X button to cancel composing of new tweet
     public void onClose(View v){
         finish();
     }
